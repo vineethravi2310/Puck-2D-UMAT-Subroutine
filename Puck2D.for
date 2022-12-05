@@ -58,11 +58,11 @@
       END DO
       
       IF ( IFLAG .EQ. 1 ) THEN
-      PT21 = 0.35
-      PC21 = 0.30
+          PT21 = 0.35
+          PC21 = 0.30
       ELSE IF ( IFLAG .EQ. 2 ) THEN
-      PT21 = 0.3
-      PC21 = 0.25
+          PT21 = 0.3
+          PC21 = 0.25
       END IF
       
       STATEV = ZERO
@@ -75,17 +75,17 @@
       S12C = S*SQRT(ONE + TWO*PC22)
       
       IF ( S11 .GT. 0.0 ) THEN
-      STATEV(1) = S11/XT        ! FIBER FAILURE IN TENSION 
+          STATEV(1) = S11/XT        ! FIBER FAILURE IN TENSION 
       ELSE
-      STATEV(2) = -S11/XC       ! FIBER FAILURE IN COMPRESSION
+          STATEV(2) = -S11/XC       ! FIBER FAILURE IN COMPRESSION
       END IF
       
       IF ( S22 .GT. 0.0 ) THEN
-      STATEV(3) = (PT21*S22/S) +  SQRT((S12/S)**2 + (ONE - ( PT21*YT/S))**2 *(S22/YT)**2)                 ! INTER FIBER FAILURE : MODE A
+          STATEV(3) = (PT21*S22/S) +  SQRT((S12/S)**2 + (ONE - ( PT21*YT/S))**2 *(S22/YT)**2)                 ! INTER FIBER FAILURE : MODE A
       ELSE IF  ( (ZERO .LE. ABS(S22/S12)) .AND.  (ABS(S22/S12) .LE. RA22/ABS(S12C)) ) THEN
-      STATEV(4) = (SQRT(S12**2 + (PC21*S22)**2) + PC21*S22)/S                                             ! INTER FIBER FAILURE : MODE B
+          STATEV(4) = (SQRT(S12**2 + (PC21*S22)**2) + PC21*S22)/S                                             ! INTER FIBER FAILURE : MODE B
       ELSE IF  (  (ZERO .LE. ABS(S12/S22)) .AND. ( ABS(S12/S22) .LE. (ABS(S12C)/RA22)) ) THEN
-      STATEV(5) = (YC/-S22)*((S22/YC)**2  + (S12/(TWO*S*(ONE + PC22)))**2)                                ! INTER FIBER FAILURE : MODE C
+          STATEV(5) = (YC/-S22)*((S22/YC)**2  + (S12/(TWO*S*(ONE + PC22)))**2)                                ! INTER FIBER FAILURE : MODE C
       END IF
       
       RETURN
