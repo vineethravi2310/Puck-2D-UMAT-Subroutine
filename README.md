@@ -29,4 +29,3 @@ There are five solution-dependent state variables. They are as follows
 
 # Verification
 
-![$eLamX^2$](https://imageshack.com/i/pnOdM7tsp)
