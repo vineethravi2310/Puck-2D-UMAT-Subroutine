@@ -32,3 +32,46 @@ There are five solution-dependent state variables. They are as follows
 | ![](Images/BC.png) | 
 |:--:| 
 | *FE Model and Boundary Conditions* |
+
+A simple tensile test is performed to check the working of the UMAT. The specimen dimensions are 100mm x 10mm. The ply layup is $[0/+45/-45/90]_s$, and each ply is 0.125mm thick. The left end of the specimen is fixed in X, Z, ROTX, ROTY, and ROTZ, and the middle of the left end is fixed in Y. A displacement of 0.15mm is applied on the right end. The material properties are
+* $E_{11}$ = 135e3 MPa
+* $E_{22}$ = 10e3 MPa
+* $\nu_{12}$ = 0.25
+* $G_{12}$ = 4.3e3 MPa
+* $X_T$ = 2410 MPa
+* $X_C$ = 1300 MPa
+* $Y_T$ = 86 MPa
+* $Y_C$ = 200 MPa
+* $S$ = 152 MPa
+* Type of Material is CFRP
+
+| ![](Images/Puck_Tensile.png) | 
+|:--:| 
+| *eLamX Results* |
+
+The same model has been created in eLamX; a composite calculator developed at TU Dresden. Above are the results of the eLamX calculator. From the above image, It can be seen that the failure occurs in the 90° ply. Now we shall be comparing these with the Abaqus results.
+
+
+| ![](Images/Ply1.png) | 
+|:--:| 
+| *Ply 1* |
+
+For the 1st ply, the dominant failure mode is the fiber tension(SDV 1). The failure index is 0.8393. The inverse of the failure index is called the Reserve Factor(RF). The reserve factor for ply 1 is 1.193
+
+| ![](Images/Ply2.png) | 
+|:--:| 
+| *Ply 2* |
+
+| ![](Images/Ply3.png) | 
+|:--:| 
+| *Ply 3* |
+
+For the 2nd and 3rd ply, the dominant mode is an inter-fiber failure: mode A (SDV 3). The failure index is 0.9705. The reserve factor for ply 2 and 3 is 1.03
+
+| ![](Images/Ply4.png) | 
+|:--:| 
+| *Ply 4* |
+
+For the 4th ply, the dominant mode is an inter-fiber failure: mode A (SDV 3). The failure index is 1.615, which means the failure has started as its value is more than 1. The reserve factor is 0.619
+
+The results of the UMAT do match eLamX results and predict the dominant mode of failure correctly.
