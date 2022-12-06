@@ -29,3 +29,6 @@ There are five solution-dependent state variables. They are as follows
 
 # Verification
 
+| ![](Images/BC.png) | 
+|:--:| 
+| *FE Model and Boundary Conditions* |
