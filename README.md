@@ -49,7 +49,7 @@ A simple tensile test is performed to check the working of the UMAT. The specime
 |:--:| 
 | *eLamX Results* |
 
-The same model has been created in eLamX; a composite calculator developed at TU Dresden. Above are the results of the eLamX calculator. From the above image, It can be seen that the failure occurs in the 90° ply. Now we shall be comparing these with the Abaqus results.
+The same model has been created in eLamX; a composite calculator developed at TU Dresden. Above are the results of the eLamX calculator. From the above image, It can be seen that the failure occurs in the 90° ply. Now we shall be comparing these with the Abaqus UMAT results.
 
 
 | ![](Images/Ply1.png) | 
