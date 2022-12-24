@@ -25,23 +25,25 @@
       
       PARAMETER (ZERO = 0.0D0, ONE = 1.0D0, TWO = 2.0D0)
 	 
-      E11 = PROPS(1)    ! ELASTIC MODULUS IN THE LONGITUDINAL 1 DIRECTION
-      E22 = PROPS(2)    ! ELASTIC MODULUS IN THE TRANSVERSE 2 DIRECTION
-      PR12 = PROPS(3)   ! MAJOR POISSONS RATIO IN 1-2 PLANE
-      G12 = PROPS(4)    ! SHEAR MODULUS IN 1-2 PLANE
+      E11 = PROPS(1)     ! ELASTIC MODULUS IN THE LONGITUDINAL 1 DIRECTION
+      E22 = PROPS(2)     ! ELASTIC MODULUS IN THE TRANSVERSE 2 DIRECTION
+      PR12 = PROPS(3)    ! MAJOR POISSONS RATIO IN 1-2 PLANE
+      G12 = PROPS(4)     ! SHEAR MODULUS IN 1-2 PLANE
       
-      XT = PROPS(5)     ! LONGITUDINAL STRENGTH IN THE 1 DIRECTION
-      XC = PROPS(6)     ! COMPRESSIVE STRENGTH IN THE 1 DIRECTION
-      YT = PROPS(7)     ! LONGITUDINAL STRENGTH IN THE 2 DIRECTION
-      YC = PROPS(8)     ! COMPRESSIVE STRENGTH IN THE 2 DIRECTION
-      S = PROPS(9)      ! SHEAR STRENGTH IN THE 1-2 PLANE
-      IFLAG = PROPS(10) ! FLAG FOR INDICATING THE TYPE OF MATERIAL. FOR CFRP IFLAG = 1. FOR GFRP IFLAG = 2 
+      XT = PROPS(5)      ! LONGITUDINAL STRENGTH IN THE 1 DIRECTION
+      XC = PROPS(6)      ! COMPRESSIVE STRENGTH IN THE 1 DIRECTION
+      YT = PROPS(7)      ! LONGITUDINAL STRENGTH IN THE 2 DIRECTION
+      YC = PROPS(8)      ! COMPRESSIVE STRENGTH IN THE 2 DIRECTION
+      S = PROPS(9)       ! SHEAR STRENGTH IN THE 1-2 PLANE
+      A0 = PROPS(10) ! 
+      XLAMBDA_MIN = PROPS(11)
+      IFLAG = PROPS(12)     ! FLAG FOR INDICATING THE TYPE OF MATERIAL. FOR CFRP IFLAG = 1. FOR GFRP IFLAG = 2 
 
-      PR21 = (E22*PR12)/E11     ! CALCULAION OF MINOR POISSONS RATIO	   
+      PR21 = (E22*PR12)/E11 ! CALCULAION OF MINOR POISSONS RATIO	   
 		   
-      DO I=1,NTENS  ! INITIALIZATION OF JACOBIAN MATRIX
+      DO I=1,NTENS        
           DO J=1,NTENS
-              DDSDDE(I,J) = ZERO
+              DDSDDE(I,J) = ZERO     ! INITIALIZATION OF JACOBIAN MATRIX
           ENDDO
       ENDDO
 	   
@@ -51,9 +53,9 @@
       DDSDDE(2,2) = E22/(1-PR12*PR21)
       DDSDDE(3,3) = G12
       
-      DO I=1, NTENS
+      DO I=1, NTENS             
           DO J=1, NTENS
-              STRESS(I) = STRESS(I) + DDSDDE(I, J)*DSTRAN(J) ! UPDATING STRESS TENSOR   
+              STRESS(I) = STRESS(I) + DDSDDE(I, J)*DSTRAN(J)     ! UPDATING STRESS TENSOR  
           END DO
       END DO
       
@@ -74,19 +76,47 @@
       PC22 = PC21*RA22/S
       S12C = S*SQRT(ONE + TWO*PC22)
       
-      IF ( S11 .GT. 0.0 ) THEN
-          STATEV(1) = S11/XT        ! FIBER FAILURE IN TENSION 
+      IF ( S11 .GT. 0.0 ) THEN     ! FIBER FAILURE IN TENSION
+          STATEV(1) = S11/XT        
+          AFB = STATEV(1)
       ELSE
-          STATEV(2) = -S11/XC       ! FIBER FAILURE IN COMPRESSION
+          STATEV(2) = -S11/XC      ! FIBER FAILURE IN COMPRESSION
+          AFB = STATEV(2)
       END IF
       
       IF ( S22 .GT. 0.0 ) THEN
-          STATEV(3) = (PT21*S22/S) +  SQRT((S12/S)**2 + (ONE - ( PT21*YT/S))**2 *(S22/YT)**2)                 ! INTER FIBER FAILURE : MODE A
+          AZFB = (PT21*S22/S) +  SQRT((S12/S)**2 + (ONE - ( PT21*YT/S))**2 *(S22/YT)**2)     ! INTER FIBER FAILURE : MODE A
+          C = AZFB/AFB
+          IF ( (M .LE. C) .AND.  (C .LE. ONE/A0) ) THEN
+              A = (ONE - A0)/SQRT(ONE - XLAMBDA_MIN**2)
+              XLAMBDA = C*(A0 + A*SQRT(ONE + C**2*(A**2 - A0**2)))/(ONE + (C*A)**2)
+              STATEV(3) = AZFB/XLAMBDA
+          ELSE
+              STATEV(3) = AZFB
+          END IF
+          
       ELSE IF  ( (ZERO .LE. ABS(S22/S12)) .AND.  (ABS(S22/S12) .LE. RA22/ABS(S12C)) ) THEN
-          STATEV(4) = (SQRT(S12**2 + (PC21*S22)**2) + PC21*S22)/S                                             ! INTER FIBER FAILURE : MODE B
-      ELSE IF  (  (ZERO .LE. ABS(S12/S22)) .AND. ( ABS(S12/S22) .LE. (ABS(S12C)/RA22)) ) THEN
-          STATEV(5) = (YC/-S22)*((S22/YC)**2  + (S12/(TWO*S*(ONE + PC22)))**2)                                ! INTER FIBER FAILURE : MODE C
-      END IF
+          AZFB = (SQRT(S12**2 + (PC21*S22)**2) + PC21*S22)/S                                 ! INTER FIBER FAILURE : MODE B
+          C = AZFB/AFB
+          IF ( (M .LE. C) .AND.  (C .LE. ONE/A0) ) THEN
+              A = (ONE - A0)/SQRT(ONE - XLAMBDA_MIN**2)
+              XLAMBDA = C*(A0 + A*SQRT(ONE + C**2*(A**2 - A0**2)))/(ONE + (C*A)**2)
+              STATEV(4) = AZFB/XLAMBDA
+          ELSE
+              STATEV(4) = AZFB
+          END IF
       
+      ELSE IF  (  (ZERO .LE. ABS(S12/S22)) .AND. ( ABS(S12/S22) .LE. (ABS(S12C)/RA22)) ) THEN
+          AZFB = (YC/-S22)*((S22/YC)**2  + (S12/(TWO*S*(ONE + PC22)))**2)                    ! INTER FIBER FAILURE : MODE C
+          C = AZFB/AFB
+          IF ( (XLAMBDA_MIN .LE. C) .AND.  (C .LE. ONE/A0) ) THEN
+              A = (ONE - A0)/SQRT(ONE - XLAMBDA_MIN**2)
+              XLAMBDA = C*(A0 + A*SQRT(ONE + C**2*(A**2 - A0**2)))/(ONE + (C*A)**2)
+              STATEV(5) = AZFB/XLAMBDA
+          ELSE
+              STATEV(5) = AZFB
+          END IF
+      END IF
+ 
       RETURN
       END

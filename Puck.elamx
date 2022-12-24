@@ -27,7 +27,7 @@
                 <criterion>de.elamx.laminate.failure.Puck</criterion>
             </layer>
             <calculation name="Calculation">
-                <n_x>776.9619104729595</n_x>
+                <n_x>-517.974606981973</n_x>
                 <n_y>0.0</n_y>
                 <n_xy>0.0</n_xy>
                 <m_x>0.0</m_x>
@@ -41,12 +41,12 @@
                 <useStrain3>false</useStrain3>
                 <useStrain4>false</useStrain4>
                 <useStrain5>false</useStrain5>
-                <epsilon_x>0.015</epsilon_x>
-                <epsilon_y>-0.004688468472118132</epsilon_y>
-                <gamma_xy>4.3221851870421785E-19</gamma_xy>
-                <kappa_x>2.2949648774102213E-18</kappa_x>
-                <kappa_y>-2.6955471431508963E-18</kappa_y>
-                <kappa_xy>1.4004498890761651E-19</kappa_xy>
+                <epsilon_x>-0.01</epsilon_x>
+                <epsilon_y>0.0031256456480787545</epsilon_y>
+                <gamma_xy>-2.8814567913614527E-19</gamma_xy>
+                <kappa_x>-1.5299765849401476E-18</kappa_x>
+                <kappa_y>1.7970314287672644E-18</kappa_y>
+                <kappa_xy>-9.336332593841104E-20</kappa_xy>
             </calculation>
         </laminate>
     </laminates>
