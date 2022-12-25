@@ -10,11 +10,11 @@
 The following is a UMAT subroutine for Puck failure criteria in Abaqus. It applies only to unidirectional composites. The general form of the Puck criterion utilizes the entire 3D state of stress and strain, but this UMAT considers only in-plane stresses and strains consistent with Classical Laminate Theory. This UMAT also considers the influence of the stress $\sigma_1$ on the Inter-Fiber Failure(IFF).
 
 ### Fiber Failure in Tension
-The fiber failure in tension is given by 
+
 $$f_{E,FF} = \frac{\sigma_1}{R^t_\parallel}$$
 
 ### Fiber Failure in Compression
-The fiber failure in compression is given by 
+
 $$f_{E,FF} = -\frac{\sigma_1}{R^c_\parallel}$$
 
 ### Inter-Fiber Failure : Mode A
@@ -23,7 +23,7 @@ $$f_{E,IFF} = \sqrt{\Bigl(   \frac{\tau_{21}  }{ R_{\perp\parallel} } \Bigl)^2 +
 
 ### Inter-Fiber Failure : Mode B
 This mode is valid when $\sigma_2 < 0$ and $0\leq  \big| \frac{\sigma_2}{\tau_{21}} \big| \leq \frac{R^A_{\perp\perp}}{|\tau_{21c}|}$
-$$f_{E,IFF} = \frac{1}{R_{\perp \parallel}} \Bigl[ \sqrt{ \tau_{21}^2 + ( p_{\perp \parallel}^c \sigma_2 )^2 } +  p_{\perp \parallel}^c \sigma_2 \Bigr]$$
+$$f_{E,IFF} = \frac{1}{R_{\perp \parallel}} \Bigl[ \sqrt{ \tau_{21}^2 + ( p_{\perp \parallel}^c \sigma_2 )^2 } +  p_{\perp \parallel}^c \sigma_2 \Bigr] $$
 
 ### Inter-Fiber Failure : Mode C
 This mode is valid when $\sigma_2 < 0$ and $0\leq  \big| \frac{\tau_{21}}{\sigma_2} \big| \leq \frac{|\tau_{21c}|}{R^A_{\perp\perp}}$
@@ -113,7 +113,7 @@ The same model has been created in eLamX²; a composite calculator developed at 
 <em>Ply 1</em>
 </p>
 
-For the 1st ply, the dominant failure mode is fiber compression(SDV 2), and the failure index is 1.037. The inverse of the failure index is called the Reserve Factor(RF), and its value is 0.964
+For the 1st ply, the dominant failure mode is fiber compression (SDV 2), and the failure index is 1.037. The inverse of the failure index is called the Reserve Factor(RF), and its value is 0.964
 
 <p align="center">
 <img src="Images/Ply2.png" width = 5000 >
@@ -141,3 +141,8 @@ For the 2nd and 3rd ply, the dominant mode is an inter-fiber failure: mode C (SD
 For the 4th ply, the dominant mode is an inter-fiber failure: mode C (SDV 5). The failure index is 0.4631, and the reserve factor is 2.159
 
 The results of the UMAT do match eLamX² results and predict the dominant mode of failure correctly.
+
+# Reference
+Knops, M. Analysis of failure in fiber polymer laminates: the theory of Alfred Puck.
+Springer Science & Business Media, 2008.
+47
