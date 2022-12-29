@@ -7,14 +7,14 @@
 <em>Different Modes of Inter-Fiber Failure Modes</em>
 </p>
 
-The following is a UMAT subroutine for Puck failure criteria in Abaqus. It applies only to unidirectional composites. The general form of the Puck criterion utilizes the entire 3D state of stress and strain, but this UMAT considers only in-plane stresses and strains consistent with Classical Laminate Theory. This UMAT also considers the influence of the stress $\sigma_1$ on the Inter-Fiber Failure(IFF).
+**Puck2D.for** is a UMAT subroutine for Puck failure criteria in Abaqus. It applies only to unidirectional composites. The general form of the Puck criterion utilizes the entire 3D state of stress and strain, but this UMAT considers only in-plane stresses and strains consistent with Classical Laminate Theory. This UMAT also considers the influence of the stress $\sigma_1$ on the Inter-Fiber Failure(IFF).
 
 ### Fiber Failure in Tension
-
+This mode is valid when $\sigma_1 \geq 0$
 $$f_{E,FF} = \frac{\sigma_1}{R^t_\parallel}$$
 
 ### Fiber Failure in Compression
-
+This mode is valid when $\sigma_1 < 0$
 $$f_{E,FF} = -\frac{\sigma_1}{R^c_\parallel}$$
 
 ### Inter-Fiber Failure : Mode A
